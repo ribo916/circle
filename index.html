@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>ChocolateChip</title>
+  </head>
+  <body>
+
+    <i>Create a function that sets a cookie with an initial value of 0 on the page. Each time on the page loads, add 1 to the cookie’s value and log it to the console. For example, the value of the cookie would be 1 on the first page load, 2 on the second load, etc. Extra Credit: On the page, create a button that resets the cookie’s value to 0 when clicked.</i>
+    
+    <h1 id="h1cookie">0</h1>
+    <button onclick="resetCount()">Reset</button>
+ 
+    <script>
+
+      window.onload = function() {
+        console.log("window onload was hit...");
+        var count = getCookie("count");
+        if (count != "") {
+          count = parseInt(count) + 1;          
+          setCookie("count", count, 30);
+          console.log("count = " + count);
+          document.getElementById ("h1cookie").innerHTML = count;
+        } else {
+          setCookie("count", 0, 30);
+        }
+      }
+
+      function setCookie(name, value, days) {
+        var dt = new Date;
+        dt.setTime(dt.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + dt.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        console.log("Created Cookie: " + name + " with a value of " + value);
+      }
+
+      function getCookie(name) {
+        name = name + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+
+      function resetCount() {
+        var count = getCookie("count");
+        if (count != "") {
+          console.log("count = " + count);
+          count = 0;
+          setCookie("count", count, 30);
+          document.getElementById ("h1cookie").innerHTML = count;
+        }
+      }
+      
+    </script>
+    
+  </body>
+</html>
